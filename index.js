@@ -1,28 +1,28 @@
 const express = require('express');
 require('dotenv').config();
 
-const {Pool} = require('pg');
-
-const DATABASE_USER = process.env.DATABASE_USER;
-const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
-const DATABASE_PORT = process.env.DATABASE_PORT;
-const DATABASE_NAME = process.env.DATABASE_NAME;
-const DATABASE_HOST= process.env.DATABASE_HOST
-
-const pool = new Pool({
-    user: DATABASE_USER,
-    host: DATABASE_HOST,
-    database: DATABASE_NAME,
-    password: DATABASE_PASSWORD,
-    port: DATABASE_PORT
-});
+const { pool } = require('./db_config.js')
 
 const app = express();
 
-app.get('/', async (req, res) => {
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.get('/tasks', async (req, res) => {
     const queryString = 'select * from tasks;';
     const { rows } = await pool.query(queryString)
     res.json(rows)
+});
+
+app.post('/task', async (req, res) => {
+    // Validar el body
+    if (!req.body.title || !req.body.category) {
+        return res.status(400).send('title y category son requeridos')
+    }
+
+    const queryString = 'insert into tasks (title, category) values ($1, $2)';
+    await pool.query(queryString, [req.body.title, req.body.category])
+    res.send('Tarea creada');
 })
 
 const PORT = process.env.PORT || 5000;
