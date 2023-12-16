@@ -23,6 +23,16 @@ app.post('/task', async (req, res) => {
     const queryString = 'insert into tasks (title, category) values ($1, $2)';
     await pool.query(queryString, [req.body.title, req.body.category])
     res.send('Tarea creada');
+});
+
+app.put('/tasks/:id/complete', async (req, res) => {
+    console.log(req.params)
+    const taskId = parseInt(req.params.id)
+    console.log(taskId)
+
+    const queryString = 'update tasks set is_complete = true where id = $1';
+    await pool.query(queryString, [taskId]);
+    res.send('Tarea actualizada')
 })
 
 const PORT = process.env.PORT || 5000;
