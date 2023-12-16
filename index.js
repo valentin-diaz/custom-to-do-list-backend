@@ -35,6 +35,16 @@ app.put('/tasks/:id/complete', async (req, res) => {
     res.send('Tarea actualizada')
 })
 
+app.put('/tasks/:id/uncomplete', async (req, res) => {
+    console.log(req.params)
+    const taskId = parseInt(req.params.id)
+    console.log(taskId)
+
+    const queryString = 'update tasks set is_complete = false where id = $1';
+    await pool.query(queryString, [taskId]);
+    res.send('Tarea actualizada')
+})
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started in port ${PORT}...`));
