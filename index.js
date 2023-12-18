@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 
 const { pool } = require('./db_config.js')
@@ -7,6 +8,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.get('/tasks', async (req, res) => {
     const queryString = 'select * from tasks;';
@@ -16,6 +18,7 @@ app.get('/tasks', async (req, res) => {
 
 app.post('/task', async (req, res) => {
     // Validar el body
+    console.log('POST TASK')
     if (!req.body.title || !req.body.category) {
         return res.status(400).send('title y category son requeridos')
     }
