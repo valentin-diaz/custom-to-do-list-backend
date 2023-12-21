@@ -58,6 +58,14 @@ app.put('/tasks/:id/report', async (req, res) => {
     res.send('Tarea actualizada')
 })
 
+app.delete('/tasks/:id', async (req, res) => {
+    const taskId = parseInt(req.params.id);
+
+    const queryString = 'delete from tasks where id = $1';
+    await pool.query(queryString, [taskId]);
+    res.send('Tarea eliminada')
+})
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started in port ${PORT}...`));
