@@ -11,7 +11,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.get('/tasks', async (req, res) => {
-    const queryString = 'select * from tasks order by createdAt;';
+    const date = req.query.date;
+
+    let queryString;
+    if (date) {
+        queryString = 'select * from tasks order by createdAt';
+    } else {
+        queryString = 'select * from tasks order by createdAt;';
+    }
+
     const { rows } = await pool.query(queryString)
     res.json(rows)
 });
