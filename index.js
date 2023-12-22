@@ -13,15 +13,18 @@ app.use(cors());
 app.get('/tasks', async (req, res) => {
     const date = req.query.date;
 
-    let queryString;
     if (date) {
-        queryString = 'select * from tasks order by createdAt';
-    } else {
-        queryString = 'select * from tasks order by createdAt;';
-    }
+        console.log('\nRECIBÍ DATE\n')
+        const queryString = 'select * from tasks where createdAt::date = $1  order by createdAt';
+        const { rows } = await pool.query(queryString, [date]);
+        return res.json(rows);
 
-    const { rows } = await pool.query(queryString)
-    res.json(rows)
+    } else {
+        console.log('\nNO RECIBÍ DATE\n')
+        const queryString = 'select * from tasks order by createdAt;';
+        const { rows } = await pool.query(queryString);
+        return res.json(rows);
+    }
 });
 
 app.post('/task', async (req, res) => {
