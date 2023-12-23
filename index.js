@@ -11,16 +11,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.get('/tasks', async (req, res) => {
+    console.log('GET TASKS')
     const date = req.query.date;
 
     if (date) {
-        console.log('\nRECIBÍ DATE\n')
         const queryString = 'select * from tasks where createdAt::date = $1  order by createdAt';
         const { rows } = await pool.query(queryString, [date]);
         return res.json(rows);
 
     } else {
-        console.log('\nNO RECIBÍ DATE\n')
         const queryString = 'select * from tasks order by createdAt;';
         const { rows } = await pool.query(queryString);
         return res.json(rows);
@@ -40,9 +39,7 @@ app.post('/task', async (req, res) => {
 });
 
 app.put('/tasks/:id/complete', async (req, res) => {
-    console.log(req.params)
     const taskId = parseInt(req.params.id)
-    console.log(taskId)
 
     const queryString = 'update tasks set is_complete = true where id = $1';
     await pool.query(queryString, [taskId]);
@@ -50,9 +47,7 @@ app.put('/tasks/:id/complete', async (req, res) => {
 })
 
 app.put('/tasks/:id/uncomplete', async (req, res) => {
-    console.log(req.params)
     const taskId = parseInt(req.params.id)
-    console.log(taskId)
 
     const queryString = 'update tasks set is_complete = false where id = $1';
     await pool.query(queryString, [taskId]);
@@ -60,7 +55,6 @@ app.put('/tasks/:id/uncomplete', async (req, res) => {
 })
 
 app.put('/tasks/:id/report', async (req, res) => {
-    console.log(req.params)
     const taskId = parseInt(req.params.id)
     const reportedHours = req.body.reportedHours;
 
