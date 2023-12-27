@@ -71,6 +71,19 @@ app.delete('/tasks/:id', async (req, res) => {
     res.send('Tarea eliminada')
 })
 
+app.get('/categories', async (req, res) => {
+    res.json([
+        'Literatura',
+        'Videojuegos',
+        'Cine',
+        'Carrera',
+        'Fitness',
+        'Historia',
+        'Navi',
+        'Cotidiano'
+    ])
+})
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started in port ${PORT}...`));
