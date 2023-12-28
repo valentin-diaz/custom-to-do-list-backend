@@ -77,11 +77,20 @@ app.get('/categories', async (req, res) => {
         'Videojuegos',
         'Cine',
         'Carrera',
+        'Música',
         'Fitness',
         'Historia',
         'Navi',
         'Cotidiano'
     ])
+})
+
+app.get('/dashboard', async (req, res) => {
+    const queryString = 'select category, sum(reported_hours) from tasks where is_complete = true group by category';
+    const { rows } = await pool.query(queryString);
+    res.json({
+        timePerCategory: rows,
+    })
 })
 
 const PORT = process.env.PORT || 5000;
