@@ -56,6 +56,15 @@ router.put('/:id/report', async (req, res) => {
     res.send('Tarea actualizada')
 })
 
+router.put('/:id/title', async (req, res) => {
+    const taskId = parseInt(req.params.id)
+    const newName = req.body.new_name;
+
+    const queryString = 'update tasks set title = $1 where id = $2;'
+    await pool.query(queryString, [newName, taskId])
+    res.send('Tarea actualizada')
+})
+
 router.delete('/:id', async (req, res) => {
     const taskId = parseInt(req.params.id);
 
