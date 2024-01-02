@@ -6,6 +6,8 @@ const { pool } = require('./db_config.js')
 
 const app = express();
 
+console.log(`APP corriendo en ${process.env.NODE_ENV}`)
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
@@ -34,7 +36,13 @@ app.get('/dashboard', async (req, res) => {
     })
 })
 
-app.get('/test', async (req, res) => {
+app.get('/test-db', async (req, res) => {
+    const queryString = 'select * from prueba;'
+    const { rows } = await pool.query(queryString);
+    res.json(rows)
+})
+
+app.get('/test-nodb', async (req, res) => {
     res.send('La API funciona')
 })
 
