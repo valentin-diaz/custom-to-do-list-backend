@@ -34,6 +34,10 @@ app.get('/dashboard', async (req, res) => {
     })
 })
 
+app.get('/test', async (req, res) => {
+    res.send('La API funciona')
+})
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started in port ${PORT}...`));
