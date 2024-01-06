@@ -12,7 +12,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-app.use('/tasks', require('./routes/tasks'))
+app.use('/tasks', require('./routes/tasks'));
+app.use('/dashboard', require('./routes/dashboard'))
 
 app.get('/categories', async (req, res) => {
     res.json([
@@ -26,14 +27,6 @@ app.get('/categories', async (req, res) => {
         'Navi',
         'Cotidiano'
     ])
-})
-
-app.get('/dashboard', async (req, res) => {
-    const queryString = 'select category, sum(reported_hours) from tasks where is_complete = true group by category';
-    const { rows } = await pool.query(queryString);
-    res.json({
-        timePerCategory: rows,
-    })
 })
 
 app.get('/test-db', async (req, res) => {
