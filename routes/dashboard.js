@@ -42,6 +42,7 @@ router.get('/', async (req, res) => {
         tasksPerCategoryPlot: tasksPerCategory,
         daysWithTaskCreatedPlot: {
             dayRange: 30,
+            category: 'Música',
             daysWithTaskCreated
         }
     })
