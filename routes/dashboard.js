@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     let rows;
     
     // Gráfico 1: Tiempo por cada categoría
-    queryString = 'select category, sum(reported_hours) from tasks where is_complete = true group by category;';
+    queryString = 'select category, sum(reported_hours) from tasks where is_complete = true group by category order by sum(reported_hours) desc;';
     ({ rows: timePerCategory } = await pool.query(queryString));
 
     // Gráfico 2: Eficiencia de tareas
