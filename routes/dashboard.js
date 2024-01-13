@@ -31,6 +31,10 @@ router.get('/', async (req, res) => {
     queryString = 'select createdAt::date, count(*) from tasks where category = \'Música\' and createdAt::date > $1::date - 30  group by createdAt::date order by createdAt::date desc ;';
     const { rows: tasksPerDay } = await pool.query(queryString, [date])
     const daysWithTaskCreated = tasksPerDay.length
+
+    // Gráfico 5: Tareas creadas por día
+    queryString = 'select createdAt::date, count(*) from tasks where createdAt::date > $1::date - 15 group by createdAt::date order by createdAt::date desc;';
+    const { rows: dailyTaskCount } = await pool.query(queryString, [date])
     
     
     res.json({  
@@ -44,7 +48,8 @@ router.get('/', async (req, res) => {
             dayRange: 30,
             category: 'Música',
             daysWithTaskCreated
-        }
+        },
+        dailyTaskCountPlot: dailyTaskCount
     })
 })
 
